@@ -8,51 +8,30 @@
 <!--
 Необязательное задание.
 
-Необходимо реализовать функцию, которая будет принимать первым аргументом
-целое положительное число, в следующих трех аргументах функция принимает слова
-в разных склонениях.
-Функция должна возвращать одно из трех переданных в параметры слов подходящее
-под число, которое передано первым аргументом.
+Необходимо вывести горку в консоль (используя цикл for), как показано на
+рисунке, только у вашей горки должно быть 20 рядов, а не 5:
 
-Пример:
-console.log(declinationOfNumber(1, "яблоко", "яблока", "яблок")); // "яблоко"
-console.log(declinationOfNumber(2, "мяч", "мяча", "мячей")); // "мяча"
-console.log(declinationOfNumber(5, "стул", "стула", "стульев")); // "стульев"
+```
+x
+xx
+xxx
+xxxx
+xxxxx
+```
 
-Функция должна работать с любым словом и любым целым положительным числом.
-Все аргументы, которые будут передаваться функции будут верны.
+Примечание: в трех косых кавычках ``` показан пример кода для вывода, вам эти
+кавычки выводить не нужно.
 -->
 <script>
   "use strict";
 
-  function declinationOfNumber(count, one, two, five) {
-    count = (count > 100) ? count % 100 : count;
+  let x = 'x';
 
-    if (count % 10 === 1 && count !== 11) {
-      return one;
-    } else if ((count < 5 || count > 21) && count % 10 > 1 && count % 10 < 5) {
-      return two;
-    }
-      else if (count >= 5 && count <= 20 || 
-                count % 10 >=5 && count % 10 <= 9 ||
-                count % 10 ===0) {
-      return five;
-    } else {
-      console.log('В переменную count введено не число');
-    }
-  };
-
-  const appleNums = 1;
-  const ballNums = 2;
-  const chairNums = 5;
-
-  console.log('у меня есть ' + appleNums + ' ' +  
-              declinationOfNumber(appleNums, "яблоко", "яблока", "яблок"));
-  console.log('у меня есть ' + ballNums + ' ' +  
-              declinationOfNumber(ballNums, "мяч", "мяча", "мячей")); 
-  console.log('у меня есть ' + chairNums + ' ' +  
-              declinationOfNumber(chairNums, "стул", "стула", "стульев"));
-
+  for (let i = 0; i < 20; i++) {
+    console.log(x);
+    
+    x += 'x';
+  }
 </script>
 </body>
 </html>
