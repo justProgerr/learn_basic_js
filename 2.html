@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homework</title>
+</head>
+<body>
+<!--
+Обязательное задание.
+
+Необходимо данное задание выполнить в es5 стиле и в es6 стиле.
+Необходимо создать функцию-конструктор/класс для поста в социальной сети.
+Названия: `PostES5` для es5 стиля и `PostES6` для es6 стиля.
+Пост должен хранить:
+1. Автора поста (имени достаточно).
+2. Текст поста.
+3. Дату и время последнего изменения поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Каждому экземпляру объекта должен быть доступен метод `edit`, который будет
+менять текст поста.
+
+---
+
+Необходимо создать функцию-конструктор/класс для закрепленного поста в
+социальной сети.
+Названия: `AttachedPostES5` для es5 стиля и `AttachedPostES6` для es6 стиля.
+Закрепленный пост должен наследоваться от обычного поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Закрепленный пост должен иметь свойство `highlighted`, в котором по умолчанию
+будет лежать значение false (это свойство будет обозначать, будет ли наш
+закрепленный пост подсвечен).
+У экземпляров объекта закрепленного поста должен быть метод с названием
+`makeTextHighlighted`, который сделает так, чтобы наш пост стал подсвеченным
+(будет менять свойство `highlighted`).
+
+---
+
+Подсказки:
+1. Задание сложное, советую делать по аналогии с примером на онлайн-занятии.
+2. Обратите внимание что пост хранит "дату и время последнего изменения
+поста", это значит что если пост кто-то изменит (например вызовет какой-то
+метод, который изменит что-то в посте), дата и время последнего изменения
+поста также должна измениться.
+3. Выполняйте все по порядку, не стоит пытаться сделать все сразу, иначе можно
+что-нибудь пропустить.
+4. Если непонятно условие - задайте вопрос.
+-->
+<script>
+  "use strict";
+
+  /**
+   * @function
+   * @returns {string} Возвращает дату в формате HH:MM:SS - DD.MM.YYYY
+   */
+  function getMyDate () {
+    const date = new Date();
+    const dateMyStyle = `${date.getHours()}:${date.getMinutes()}:${date
+      .getSeconds()} - ${date.getDate()}.${date.getMonth() + 1}.${date
+      .getFullYear()}`;
+    return dateMyStyle;
+  }
+
+
+  // ------------------------- В формате ES5 ----------------------------------
+  function PostES5(author, text) {
+    this.author = author;
+    this.text = text;
+    this.date = `Добавлено ${getMyDate()}`;
+  };
+
+  PostES5.prototype.edit = function (textNew) {
+    this.text = textNew;
+    this.date = `Изменено ${getMyDate()}`;
+  };
+
+  // Правильно ли я понял как работает call. Он берёт свойства из объекта, 
+  // указанного перед точкой? Получается в данном контекста this - это 
+  // AttachedPostES5, а следующие аргументы после this берутся из конструктора 
+  // PostES5? То есть за кулисами это вот так 
+  //
+  // function AttachedPostES (author, text, date) {
+  //  this.author = postES5.author; 
+  //  this.text = postES5.text; 
+  //  this.date = postES5.date; 
+  //
+  // Получается именно поэтому если записать вот так:
+  // 
+  // function AttachedPostES5(author, text) {
+  //  PostES5.call(this, author, text, date);
+  //  this.highlighted = false;
+  // }
+  // 
+  // Выходит ошибка. Потому что если не указать параметр date, получается вот 
+  // такая запись:
+  // 
+  // undefined = Post.date
+  //
+  function AttachedPostES5(author, text, date) {
+    PostES5.call(this, author, text, date);
+    this.highlighted = false;
+  }
+
+  AttachedPostES5.prototype = Object.create(PostES5.prototype);
+  AttachedPostES5.prototype.constructor = AttachedPostES5;
+
+  AttachedPostES5.prototype.makeTextHighlighted = function() {
+    this.highlighted = true;
+  };
+
+  console.log('---------ES5----------');
+
+  const post1 = new PostES5('Денис', 'Какой то текст');
+  const post2 = new PostES5('Роман', 'Какой то текст');
+  console.log(post1);
+  console.log(post2);
+
+  post1.edit('Новый  текст');
+  post2.edit('Новый  текст');
+  console.log(post1);
+  console.log(post2);
+
+  const postAttached1 = new AttachedPostES5('Евгений', 'Какой-то текст');
+  const postAttached2 = new AttachedPostES5('Александр', 'Какой-то текст');
+  console.log(postAttached1);
+  console.log(postAttached2);
+
+  postAttached1.edit('Новый  текст');
+  postAttached2.edit('Новый  текст');
+  postAttached1.makeTextHighlighted();
+  postAttached2.makeTextHighlighted();
+  console.log(postAttached1);
+  console.log(postAttached2);
+// ----------------------------------------------------------------------------
+
+// -------------------- В формате ES6 -----------------------------------------
+
+  class PostES6 {
+    constructor(author, text) {
+      this.author = author;
+      this.text = text;
+      this.date = `Добавлено ${getMyDate()}`;
+    }
+
+    edit(newText) {
+      this.text = newText;
+      this.date = `Изменено ${getMyDate()}`;
+    }
+  };
+
+  // А вот здесь, если я правильно понял, методы super класса автоматически 
+  // записываются в класс AttachedPostES6. А супер класс этот тот что записано 
+  // после extands.
+  class AttachedPostES6 extends PostES6 {
+    constructor (author, text, date) {
+      super(author, text, date);
+      this.highlighted = false;
+    }
+
+    makeTextHighlighted() {
+      this.highlighted = true;
+    }
+  }
+
+  console.log('---------ES6----------');
+
+  const post3 = new PostES6('Денис', 'Какой то текст');
+  const post4 = new PostES6('Роман', 'Какой то текст');
+  console.log(post3);
+  console.log(post4);
+
+  post3.edit('Новый  текст');
+  post4.edit('Новый  текст');
+  console.log(post3);
+  console.log(post4);
+
+  const postAttached3 = new AttachedPostES6('Евгений', 'Какой-то текст');
+  const postAttached4 = new AttachedPostES6('Александр', 'Какой-то текст');
+  console.log(postAttached3);
+  console.log(postAttached4);
+
+  postAttached3.edit('Новый  текст');
+  postAttached4.edit('Новый  текст');
+  postAttached3.makeTextHighlighted();
+  postAttached4.makeTextHighlighted();
+  console.log(postAttached3);
+  console.log(postAttached4);
+</script>
+</body>
+</html>
