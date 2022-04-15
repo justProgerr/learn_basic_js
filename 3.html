@@ -31,6 +31,14 @@
 <script>
   "use strict";
 
+  /**
+  *
+  *@param {number} num - число
+  *@description функция выполняет проверку числа на: целочисленность, соответ-
+  * ствие диапазону, положительность
+  *@returns {object} возвращает объект со свойствами, если условие верно. Иначе
+  * возвращается пустой объект
+  */
   function getDigitsOfNumber(num) {
     if (!(num > 0 && num < 1000) || !Number.isInteger(num)) {
       console.error('У нас проблема, Карл (o-_-o)');
