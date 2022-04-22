@@ -2,7 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Homework</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+  <style>
+    i {
+      font-size: 50px;
+    }
+    .golden {
+      color: gold;
+    }
+  </style>
 </head>
 <body>
 <!--
@@ -12,150 +22,117 @@
 стирать, код с решением задачи пишем под комментарием.
 -->
 
-<p class="super_element">Привет</p>
-
-<img src="https://placeimg.com/50/50/animals" alt="">
-<img src="https://placeimg.com/50/50/arch" alt="">
-<img src="https://placeimg.com/50/50/nature" alt="">
-<img src="https://placeimg.com/50/50/people" alt="">
-<img src="https://placeimg.com/50/50/tech" alt="">
-<img src="https://placeimg.com/50/50/tech/grayscale" alt="">
-<img src="https://placeimg.com/50/50/tech/sepia" alt="">
-
-<br>
-
-<button>Кнопка</button>
-<button class="super_element">Кнопка с классом btn</button>
-<button>Кнопка</button>
-
-<br>
-
-<textarea></textarea>
-
-<br>
-
-<ul>
-  <li>
-    <button>Кнопка 1</button>
-  </li>
-  <li>
-    <button>Кнопка 2</button>
-  </li>
-  <li>
-    <button>Кнопка 3</button>
-  </li>
-  <li>
-    <button>Кнопка 4</button>
-  </li>
-</ul>
+<div class="stars_container">
+  <i class="fas fa-star"></i>
+  <i class="fas fa-star"></i>
+  <i class="fas fa-star"></i>
+  <i class="fas fa-star"></i>
+  <i class="fas fa-star"></i>
+</div>
 
 <script>
   "use strict";
 
   /*
-  1. Необходимо вывести сообщение в консоль "все теги прогрузились", когда все
-  теги будут созданы браузером.
+  1. При наведении на любую из звезд, данной звезде должен ставиться класс
+  golden, также такой класс должен ставиться всем звездам до нее слева.
   */
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('Все теги прогрузились');
-  });
-  /*
-  2. Необходимо вывести сообщение в консоль "страница загрузилась", когда все
-  ресурсы страницы будут загружены.
-  */
-  window.addEventListener('load', () => {
-    console.log('Страница загрузилась');
-  });
 
-  /*
-  3. При клике на какой-либо тег на странице в консоль должно выводиться
-  сообщение наподобие:
-  Класс "super_element" присутствует в элементе "div".
-  сообщение должно определять присутствует или отсутствует класс "super_element"
-  у элемента, а также выводить в нижнем регистре верный тег в данной строке, по
-  которому был совершен клик.
-  Необходимо использовать делегирование.
-  */
-  document.addEventListener('click', (event) => {
-    let isSuperElement = null;
+  const stars = document.querySelectorAll('.fa-star');
+  stars.forEach(star => {
+    star.addEventListener('mouseover', (event) => {
+      let starCount = star; 
 
-    if (event.target.classList.contains('super_element')) {
-      isSuperElement = 'присутствует';
-    } else {
-      isSuperElement = 'отсутствует';
-    };
-
-    console.log(
-      `Класс "super_element" "${isSuperElement}" в элементе "${event
-        .target.localName}".`
-    );
+      while (starCount) {
+        starCount.classList.add('golden');
+        starCount = starCount.previousElementSibling;
+      }
+    });
   });
 
   /*
-  4. Сделайте, чтобы при наведении на textarea в консоли появлялось сообщение:
-  "Вы навели на textarea."
+  2. Когда мы уводим курсор мыши от звезды, все поставленные классы из первого
+  задания должны быть удалены.
    */
-  const textArea = document.querySelector('textarea');
-  textArea.addEventListener('mouseover', () => {
-    console.log('Вы навели на textarea');
+  stars.forEach(star => {
+    star.addEventListener('mouseout', () => {
+      stars.forEach(star => {
+        star.classList.remove('golden')
+      });
+    });
   });
-  /*
-  5. Необходимо повесить событие клика на тег ul. В обработчике события в
-  консоль необходимо выводить текст, который записан внутри элемента кнопки,
-  по которой был произведен клик.
-  Если клик был не по кнопке, то ничего выводить не нужно.
-  Необходимо использовать делегирование.
-   */
-  const ulEL = document.querySelector('ul');
-  ulEL.addEventListener('click', (event) => {
-    if (event.target.tagName === 'BUTTON') {
-      console.log(event.target.innerText);
-    };
-  })
 
   /*
-  6. Вопрос: Почему в console.log пишется сначала текст из 5 задания и только
-  потом выводится текст из 3 задания, если мы кликаем по кнопкам в ul?
-  Ответ необходимо написать здесь же, под этим комментарием, своими словами.
+  3. Когда мы переводим мышь от одной звезды к другой, у нас могут мигать
+  звезды (временно могут становиться черными). Почему так? Напишите словами.
+  Можем ли мы это исправить? Если да, то предложите решение.
   */
-
   /*
-    В событиях javascript есть такие понятия как: погружение и всплытие. 
-    События по умолчанию отлавливаются на всплытии.
+    В нашем случае, между звёздами есть зазоры, когда указатель мыши падает 
+    на этот зазор, србатывает событие с удалением класса "golden", а окрашивание
+    происходит в тот момент, когда курсор мыши падает на один из элементов. То
+    есть когда указатель мыши находится на зазоре, событие с окрашиванием ещё не
+    сработало, а вот событие с затемнением уже :D.
+    Это можно увидеть если медленно перетаскивать указатель мыши в центр одного
+    из зазоров и зафиксировать мышь в момент затемнения звёзд.
 
-    в задании 3, мы установили слушатель события на элемент "document". Событие
-    погружается от родительского элемента до элемента на котором произошло 
-    событие. То есть, в задании 3, погружение идёт вот так:
-    window -> document
-    
-    в задании 5, мы установили слушатель события на элемент ul. Погружение идёт 
-    так: window -> document -> html -> body -> ul
+    Мы можем исправить это несколькими вариантами.
 
-    Как уже говорилось, событие по умолчанию отлавливается на всплытии, по этому
-    первым выполнится то событие которое находится глубже. 
-
-        задание 3:                        задание 5:
-
-                window                             window
-  погружение      |          всплытие                |
-               document                           document
-         |                            |              |
-        \|/                          /|\            html
-         |                            |              |
-                                                    body
-                                                     |
-                                                     ul  - Находится глубже
-                                                           поэтому выполнится 
-                                                           первым
+    1. Убрать зазоры между звёздами.
+    2. Установить обработчик событие не на отвод мыши со звезды, а на отвод мыши
+       с контейнера со звёздами. Только тогда нужно ещё немного внести правки 
+       в блоке кода, где мы устанавливаем событие окрашивания.
+       Готовое решение будет выглядеть так:
   */
-
+  
   /*
-  7. С помощью JS необходимо изменить цвет заднего фона каждого второго тега li.
-   */
-  const liEL = document.querySelectorAll('li:nth-child(even)');
-  liEL.forEach((li) => {
-    li.style.backgroundColor = 'green';
+  const starsBox = document.querySelector('.stars_container');
+  const stars = document.querySelectorAll('.fa-star');
+
+  stars.forEach(star => {
+    star.addEventListener('mouseover', (event) => {
+
+      // сначала мы сразу удаляем цвет со всех звёзд. Будет срабатывать при 
+      // наведении на одну из звёзд
+      stars.forEach(star => star.classList.remove('golden'));
+      
+      let starCount = star; 
+
+      // теперь окрашиваем элементы(звёзды) до целевого элемента
+      while (starCount) {
+        starCount.classList.add('golden');
+        starCount = starCount.previousElementSibling;
+      }
+    });
   });
+  */
+ 
+      // Это странно, но почему то не сработало так как было задумано. mouseout
+      // срабатывает когда указатель мыши падает со звезды, но ведь указатель 
+      // мыши не уходит с контейнера :D ?!
+      // Буду разбираться дальше. На всякий случай оставлю свой код с попыткой
+      
+      /*
+        starsBox.addEventListener('mouseout', () => {
+          stars.forEach(star => {
+            star.classList.remove('golden');
+          });
+        });  
+      */
+
+      // Придумал другое решение. :)
+      // Но оно тоже не сработало... :(
+
+      // Всё. Я нашёл событие которое работает так как нужно. И заодно вроде 
+      // разобрался почему не работало событие mouseout.
+
+      /*
+      starsBox.addEventListener('mouseleave', () => {
+        stars.forEach(star => {
+          star.classList.remove('golden');
+        });
+      });
+      */
 </script>
 </body>
 </html>
